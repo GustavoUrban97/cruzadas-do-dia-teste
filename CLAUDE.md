@@ -160,7 +160,7 @@ Sem ajuda enquanto escrevo; conferir só quando eu peço:
 ```
 
 - **Tamanho fixo: 13 colunas × 17 linhas**, todo dia e nos três níveis.
-- `tema` (opcional): `{"nome": "Vingadores: Doutor Destino", "cor": "#e2dcea"}` nos dias com tema, igual nos três níveis. O app mostra "★ nome do tema" à esquerda do banco e pinta as casas de dica (e os destaques da barra) com a `cor` (clara, sem vermelho nem verde); o validador põe `"temas": {"AAAA-MM-DD": "nome"}` no `index.json` e o calendário do histórico marca esses dias com ★.
+- `tema` (opcional): `{"nome": "Vingadores: Doutor Destino", "cor": "#cdbde9", "destaque": "#2b1d45", "fonte": "Russo One", "enfeite": "raio"}` nos dias com tema, igual nos três níveis. Campos opcionais: `destaque` (fundo escuro), `borda`, `fonte` (família do Google Fonts, carregada só nesse dia; sem internet cai na serifada) e `enfeite` (`raio` ou `estrela`). O app vira "edição especial": faixa de capa com o nome do tema na `fonte`, margens escuras com retícula de gibi, borda grossa na grade, casas de dica na `cor` (sem vermelho nem verde), Conferir escuro e o enfeite ao lado da data (pedido de 23/11: "visual mais agressivo"); o validador põe `"temas": {"AAAA-MM-DD": "nome"}` no `index.json` e o calendário do histórico marca esses dias com ★.
 - `banco` (opcional): palavras de ajuda mostradas de ponta-cabeça embaixo da grade. Todas precisam estar na grade. O gerador escolhe as mais raras (de preferência de 3 a 5 letras, nunca proibidas): 5 no fácil, 4 na média, 3 no difícil.
 - `nivel`: `facil`, `media` ou `dificil`; o arquivo se chama `AAAA-MM-DD-nivel.json`. O `id` é único entre todos os puzzles.
 - `#` = casa de dica. Casa `#` sem nenhuma dica aparece como casa preta. Letras maiúsculas sem acento (padrão de cruzadas brasileiras).

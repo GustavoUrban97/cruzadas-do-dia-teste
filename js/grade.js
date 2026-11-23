@@ -97,18 +97,8 @@ export function renderizarGrade(elemento, puzzle) {
  */
 export function renderizarBanco(elemento, puzzle) {
   const palavras = Array.isArray(puzzle.banco) ? puzzle.banco : [];
-  const tema = puzzle.tema && typeof puzzle.tema.nome === 'string' ? puzzle.tema.nome : '';
   elemento.replaceChildren();
-  elemento.hidden = palavras.length === 0 && !tema;
-  // Dia com tema: "★ nome do tema" à esquerda, de pé (o banco continua de ponta-cabeça).
-  elemento.classList.toggle('com-tema', Boolean(tema));
-  if (tema) {
-    const rotulo = document.createElement('em');
-    rotulo.className = 'tema';
-    rotulo.textContent = `★ ${tema}`;
-    rotulo.title = `Tema do dia: ${tema}`;
-    elemento.append(rotulo);
-  }
+  elemento.hidden = palavras.length === 0;
   if (!palavras.length) return;
   const span = document.createElement('span');
   const titulo = document.createElement('b');

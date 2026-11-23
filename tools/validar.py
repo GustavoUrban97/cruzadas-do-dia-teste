@@ -29,6 +29,8 @@ NIVEIS = ("facil", "media", "dificil")  # mesma ordem de js/niveis.js
 NOME_ARQUIVO = re.compile(r"^\d{4}-\d{2}-\d{2}-(facil|media|dificil)\.json$")
 LINHA_VALIDA = re.compile(r"^[A-Z#]+$")
 COR = re.compile(r"^#[0-9a-fA-F]{6}$")
+FONTE = re.compile(r"^[A-Za-z0-9 ]{2,40}$")  # família do Google Fonts (js/app.js, aplicarTema)
+ENFEITES = ("raio", "estrela")  # mesmos de js/app.js
 
 # direcao -> (deslocamento até a 1ª letra, sentido da palavra)
 DIRECOES = {
@@ -171,13 +173,19 @@ def validar_puzzle(caminho):
         if len(banco) > 6:
             avisos.append(f"banco com {len(banco)} palavras pode não caber embaixo da grade")
 
-    # tema (opcional): {"nome": "...", "cor": "#rrggbb"}; os níveis do dia têm o mesmo nome
+    # tema (opcional): {"nome", "cor", "destaque", "borda", "fonte", "enfeite"}; só o nome é obrigatório
     tema = puzzle.get("tema")
     if tema is not None:
         if not isinstance(tema, dict) or not isinstance(tema.get("nome"), str) or not tema["nome"].strip():
-            erros.append('tema deve ser {"nome": "...", "cor": "#rrggbb"}')
-        elif "cor" in tema and not COR.match(str(tema["cor"])):
-            erros.append(f"cor do tema inválida: {tema['cor']} (use #rrggbb)")
+            erros.append('tema deve ser {"nome": "...", ...} (ver CLAUDE.md)')
+        else:
+            for campo in ("cor", "destaque", "borda"):
+                if campo in tema and not COR.match(str(tema[campo])):
+                    erros.append(f"{campo} do tema inválida: {tema[campo]} (use #rrggbb)")
+            if "fonte" in tema and not FONTE.match(str(tema["fonte"])):
+                erros.append(f"fonte do tema inválida: {tema['fonte']} (nome de família do Google Fonts)")
+            if "enfeite" in tema and tema["enfeite"] not in ENFEITES:
+                erros.append(f"enfeite do tema inválido: {tema['enfeite']} (use {', '.join(ENFEITES)})")
 
     return puzzle, erros, avisos
 
@@ -224,7 +232,10 @@ def main():
         for data, niveis in sorted(niveis_por_data.items())
     }
     total = sum(len(n) for n in indice.values())
-    conteudo = json.dumps({"datas": indice}, ensure_ascii=False, indent=2) + "\n"
+    saida = {"datas": indice}
+    if temas:
+        saida["temas"] = dict(sorted(temas.items()))
+    conteudo = json.dumps(saida, ensure_ascii=False, indent=2) + "\n"
     INDICE.write_text(conteudo, encoding="utf-8", newline="\n")
     print(f"\n{total} puzzle(s) válido(s) em {len(indice)} dia(s). puzzles/index.json atualizado.")
     return 0

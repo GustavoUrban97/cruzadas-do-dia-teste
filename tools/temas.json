@@ -2,7 +2,10 @@
   "_sobre": "Dias com tema, lidos pelo gerador. Chave: AAAA-MM-DD (um dia) ou MM-DD (todo ano). nome e cor (#rrggbb, clara, sem vermelho nem verde) vão para o puzzle; titulo (texto ou por nível) troca o do dia da semana; palavras: candidatas sem acento, até 9 letras (parte delas entra na grade); minimo/maximo: quantas palavras-tema por nível.",
   "2026-12-17": {
     "nome": "Vingadores: Doutor Destino",
-    "cor": "#e2dcea",
+    "cor": "#cdbde9",
+    "destaque": "#2b1d45",
+    "fonte": "Russo One",
+    "enfeite": "raio",
     "titulo": { "facil": "Quinta de heróis", "media": "Quinta dos Vingadores", "dificil": "Quinta do Destino" },
     "minimo": { "facil": 4, "media": 4, "dificil": 4 },
     "maximo": { "facil": 8, "media": 9, "dificil": 10 },

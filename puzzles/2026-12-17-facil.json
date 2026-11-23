@@ -4,7 +4,7 @@
   "nivel": "facil",
   "titulo": "Quinta de heróis",
   "autor": "Gustavo",
-  "tema": {"nome": "Vingadores: Doutor Destino", "cor": "#e2dcea"},
+  "tema": {"nome": "Vingadores: Doutor Destino", "cor": "#cdbde9", "destaque": "#2b1d45", "fonte": "Russo One", "enfeite": "raio"},
   "largura": 13,
   "altura": 17,
   "grade": [

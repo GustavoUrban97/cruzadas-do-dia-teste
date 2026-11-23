@@ -13,7 +13,7 @@ import { carregarTinta, salvarTinta, pedirPersistencia, carregarRegistro, atuali
 // Versão do app, mostrada discretamente no cabeçalho.
 // IMPORTANTE: precisa ser igual à VERSAO de sw.js, que deve subir a cada mudança
 // em HTML/CSS/JS (é o que faz o tablet perceber que há versão nova).
-const VERSAO = 21;
+const VERSAO = 22;
 
 // Celular (tela estreita): sem caneta, o jogo é só pelo modo teclado.
 // O mesmo limite está no CSS (@media max-width: 599px).
@@ -58,6 +58,44 @@ function escolherPuzzle(data, nivel, indice) {
   const dias = diasEntre(datas[0], data);
   const escolhida = datas[((dias % n) + n) % n];
   return { arquivo: `${escolhida}-${nivel}`, dataDoArquivo: escolhida, substituto: true };
+}
+
+// ---------- Dia com tema (edição especial) ----------
+
+// Enfeites (silhuetas genéricas, usadas como máscara CSS na cor do tema).
+const ENFEITES = {
+  raio: '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M14.5 1 3 14h7.5L8 23 21 9h-7.5z"/></svg>',
+  estrela: '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 1.5l3.1 6.9 7.4.7-5.6 5 1.7 7.4L12 17.6l-6.6 3.9 1.7-7.4-5.6-5 7.4-.7z"/></svg>',
+};
+
+/**
+ * puzzle.tema = { nome, cor?, destaque?, fonte?, enfeite? }: faixa de capa com o
+ * nome em letras grandes, casas de dica na `cor`, margens escuras com retícula
+ * de gibi na cor `destaque`, a `fonte` (Google Fonts; sem internet, cai na
+ * serifada) e o enfeite (raio ou estrela). Dia sem tema não muda nada.
+ */
+function aplicarTema(tema) {
+  if (!tema || typeof tema.nome !== 'string' || !tema.nome.trim()) return;
+  const raiz = document.documentElement.style;
+  const cor = c => (/^#[0-9a-f]{6}$/i.test(c || '') ? c : null);
+  if (cor(tema.cor)) raiz.setProperty('--casa-dica', tema.cor);
+  if (cor(tema.destaque)) raiz.setProperty('--tema-destaque', tema.destaque);
+  if (cor(tema.borda)) raiz.setProperty('--tema-borda', tema.borda);
+  if (/^[A-Za-z0-9 ]{2,40}$/.test(tema.fonte || '')) {
+    const link = document.createElement('link');
+    link.rel = 'stylesheet';
+    link.href = `https://fonts.googleapis.com/css2?family=${tema.fonte.trim().replace(/ /g, '+')}&display=swap`;
+    document.head.append(link);
+    raiz.setProperty('--tema-fonte', `'${tema.fonte.trim()}', var(--serifa)`);
+  }
+  const svg = ENFEITES[tema.enfeite] || ENFEITES.estrela;
+  raiz.setProperty('--tema-icone', `url("data:image/svg+xml,${encodeURIComponent(svg)}")`);
+  document.body.classList.add('dia-tema');
+  const capa = $('capa-tema');
+  const nome = document.createElement('span');
+  nome.textContent = tema.nome;
+  capa.replaceChildren(document.createElement('i'), nome, document.createElement('i'));
+  capa.hidden = false;
 }
 
 // ---------- Preferências leves (localStorage, sempre com try/catch) ----------
@@ -529,10 +567,7 @@ async function iniciar() {
         `mostrando a de ${dataCurta(dataDoArquivo)}. O banco precisa de puzzles novos.`);
     }
 
-    // Dia com tema: as casas de dica (e a faixa da dica) ganham a cor do tema.
-    if (puzzle.tema && /^#[0-9a-f]{6}$/i.test(puzzle.tema.cor || '')) {
-      document.documentElement.style.setProperty('--casa-dica', puzzle.tema.cor);
-    }
+    aplicarTema(puzzle.tema);
     renderizarGrade($('grade'), puzzle);
     renderizarBanco($('banco'), puzzle);
     if (data < hoje()) colocarGabarito($('grade'), puzzle); // como no jornal: só no dia seguinte

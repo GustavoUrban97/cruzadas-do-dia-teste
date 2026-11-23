@@ -66,6 +66,11 @@ export function temaDe(data) {
   return { ...t, palavras: t.palavras.map(normalizar) };
 }
 
+/** O que do tema vai para o puzzle (o app usa): nome, cor, destaque, borda, fonte, enfeite. */
+function visualDoTema(tema) {
+  return Object.fromEntries(['nome', 'cor', 'destaque', 'borda', 'fonte', 'enfeite'].filter(k => tema[k]).map(k => [k, tema[k]]));
+}
+
 /** Título: o do tema (texto ou { nivel: texto }), senão o do dia da semana. */
 function tituloDo(data, nivel, tema) {
   const t = tema && tema.titulo;
@@ -301,7 +306,7 @@ function gerar() {
         if (!p) { log(`${arquivo}: não consegui gerar.`); continue; }
         estado.puzzles.set(arquivo, {
           id: proximoId++, data, nivel, titulo: tituloDo(data, nivel, tema), autor: 'Gustavo',
-          ...(tema && { tema: { nome: tema.nome, ...(tema.cor && { cor: tema.cor }) } }),
+          ...(tema && { tema: visualDoTema(tema) }),
           semente: p.semente, grade: p.grade, dicas: p.dicas,
         });
         guardarLote();
