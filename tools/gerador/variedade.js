@@ -219,7 +219,7 @@ export async function gerarUma(data, nivel, inicio, n = 8, tema = null) {
         resolver({ data, nivel, semente: m.pronto.semente, grade: m.pronto.grade, dicas: m.pronto.dicas, descartes });
       };
       w.postMessage({ id: arquivo, lista, perfil: PERFIS[nivel], semente: Math.floor(Math.random() * 1e8), tentativas: 400,
-        tema: doTema ? { palavras: doTema.frente, quantas: Math.max(2, doTema.minimo - 1), todas: [...doTema.todas] } : null });
+        tema: doTema ? { palavras: doTema.frente, quantas: Math.min(3, Math.max(2, doTema.minimo - 1)), todas: [...doTema.todas] } : null });
     };
     for (let k = 0; k < n; k++) lancar();
   });

@@ -7,16 +7,28 @@
     "fonte": "Russo One",
     "enfeite": "raio",
     "titulo": { "facil": "Quinta de heróis", "media": "Quinta dos Vingadores", "dificil": "Quinta do Destino" },
-    "minimo": { "facil": 4, "media": 4, "dificil": 4 },
-    "maximo": { "facil": 8, "media": 9, "dificil": 10 },
+    "minimo": { "facil": 8, "media": 8, "dificil": 8 },
+    "maximo": { "facil": 40, "media": 40, "dificil": 40 },
     "palavras": [
       "ESCUDO", "MARTELO", "MANOPLA", "ARMADURA", "VILAO", "VILOES", "HEROI", "HEROIS", "HEROINA",
       "PODER", "PODERES", "VINGADOR", "DESTINO", "DOUTOR", "MASCARA", "CAPA", "RAIO", "TROVAO",
-      "TEIA", "ARANHA", "MAGIA", "FEITICO", "MAGO", "MUTANTE", "GARRAS", "TITA", "VIUVA", "GAVIAO",
+      "TEIA", "ARANHA", "MAGIA", "FEITICO", "MAGO", "MUTANTE", "GARRAS", "TITA", "TITAS", "VIUVA", "GAVIAO",
       "FLECHA", "ARCO", "PANTERA", "FORMIGA", "VESPA", "FALCAO", "SOLDADO", "CAPITAO", "GALAXIA",
       "PORTAL", "INFINITO", "JOIA", "JOIAS", "GUERRA", "BATALHA", "ALIANCA", "LENDA", "GIBI",
       "QUADRINHO", "ESTREIA", "CINEMA", "PIPOCA", "INGRESSO", "SAGA", "ELENCO", "TRAJE", "CETRO",
-      "ELMO", "CHIFRES", "ANDROIDE", "EQUIPE", "THOR", "LOKI", "ODIN", "ASGARD", "WAKANDA", "VIBRANIO"
+      "ELMO", "CHIFRES", "ANDROIDE", "EQUIPE", "THOR", "LOKI", "ODIN", "ASGARD", "WAKANDA", "VIBRANIO",
+      "FERRO", "ACO", "METAL", "GELO", "FOGO", "TEMPO", "ESPACO", "ROBO", "DEUS", "DEUSES", "GIGANTE",
+      "TORRE", "NAVE", "PONTE", "ARCOIRIS", "LUVA", "REATOR", "CIENCIA", "GENIO", "ESPIAO", "ESPIA",
+      "AGENTE", "GUERREIRO", "REI", "RAINHA", "TRONO", "REINO", "PLANETA", "ESTRELA", "ESTRELAS",
+      "COSMOS", "COMETA", "ORBITA", "UNIVERSO", "DIMENSAO", "AMULETO", "OLHO", "MANTO", "ESPADA",
+      "LANCA", "MACHADO", "VENTO", "RAIVA", "VERDE", "GUAXINIM", "ARVORE", "CAPITA", "VISAO",
+      "CICLOPE", "FERA", "NOTURNO", "MAGNETO", "QUARTETO", "COISA", "TOCHA", "ELASTICO", "INVISIVEL",
+      "LATVERIA", "METADE", "ESTALO", "CINZAS", "ULTIMATO", "ERA", "CIVIL", "HIDRA", "AMERICA",
+      "INVERNAL", "ESTRANHO", "SUPREMO", "ERVA", "CORACAO", "QUANTICO", "ENCOLHER", "SENHOR",
+      "GUARDIOES", "FITA", "CASSETE", "ETERNOS", "FORCA", "PILOTO", "ALVO", "VOO", "VOAR", "ASA", "ASAS",
+      "GARRA", "CAOS", "BRUXA", "ESCARLATE", "CAVEIRA", "RUSSA", "ROCHA", "PEDRA", "ESTICAR",
+      "SURFISTA", "PRATEADO", "PRANCHA", "TELA", "SESSAO", "FILA", "CENA", "CREDITOS", "ATOR",
+      "ATRIZ", "DIRETOR", "ROTEIRO", "FILME", "FASE", "REVISTA", "SEQUENCIA", "MULHER", "HOMEM"
     ]
   }
 }
