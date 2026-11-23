@@ -382,6 +382,23 @@ body {
   font-weight: 400;
 }
 
+/* Lembrete "Ontem ficou sem conferir", com ✕ para dispensar */
+.lembrete {
+  display: flex;
+  align-items: stretch;
+  background: var(--casa-dica);
+  border-bottom: 1.5px solid #d8d0bd;
+}
+.lembrete[hidden] { display: none; }
+.lembrete .faixa {
+  flex: 1;
+  min-width: 0;
+  border-bottom: 0;
+  padding-left: calc(0.75rem + 36px); /* texto centrado apesar do ✕ */
+}
+.lembrete .botao-icone { width: 36px; height: auto; border-radius: 0; }
+.lembrete .botao-icone svg { width: 16px; height: 16px; }
+
 /* Mensagem rápida (ex.: gesto de voltar ignorado) */
 .toast {
   position: fixed;

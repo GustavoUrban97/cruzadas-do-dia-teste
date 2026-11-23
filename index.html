@@ -68,7 +68,13 @@
   <p class="aviso" id="aviso" hidden></p>
   <button type="button" class="faixa" id="atualizacao" hidden>Atualização disponível · toque para recarregar</button>
   <button type="button" class="faixa" id="novo-puzzle" hidden>Novo puzzle disponível · toque para abrir</button>
-  <button type="button" class="faixa faixa-clara" id="lembrete-ontem" hidden>Ontem ficou sem conferir · toque para ver o gabarito</button>
+  <!-- Ontem ficou sem conferir: tocar abre o gabarito; ✕ dispensa o aviso daquele dia -->
+  <div class="lembrete" id="lembrete-ontem" hidden>
+    <button type="button" class="faixa faixa-clara" id="lembrete-abrir">Ontem ficou sem conferir · toque para ver o gabarito</button>
+    <button type="button" class="botao-icone" id="lembrete-fechar" title="Dispensar o aviso" aria-label="Dispensar o aviso">
+      <svg viewBox="0 0 24 24"><path d="M6 6l12 12 M18 6L6 18" fill="none" stroke="#1a1a1a" stroke-width="2" stroke-linecap="round"/></svg>
+    </button>
+  </div>
 
   <!-- Hoje: resultado da conferência (sem mostrar respostas) -->
   <div class="resultado" id="resultado" hidden>

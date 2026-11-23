@@ -13,7 +13,7 @@ import { carregarTinta, salvarTinta, pedirPersistencia, carregarRegistro, atuali
 // Versão do app, mostrada discretamente no cabeçalho.
 // IMPORTANTE: precisa ser igual à VERSAO de sw.js, que deve subir a cada mudança
 // em HTML/CSS/JS (é o que faz o tablet perceber que há versão nova).
-const VERSAO = 22;
+const VERSAO = 23;
 
 // Celular (tela estreita): sem caneta, o jogo é só pelo modo teclado.
 // O mesmo limite está no CSS (@media max-width: 599px).
@@ -481,8 +481,11 @@ async function configurarDia({ data, nivel, arquivo, irPara, puzzle, conferencia
 /**
  * Algum puzzle de ontem escrito e que ficou sem resolver (nem desistir): mostra
  * um lembrete discreto para ver o gabarito. O nível aberto tem preferência.
+ * O ✕ dispensa o lembrete daquele dia (nos três níveis); no dia seguinte ele
+ * volta a valer. Dispensar não muda o registro.
  */
 async function lembrarOntem(ontem, nivelAberto, irPara) {
+  if (lerPreferencia('lembrete-dispensado', '') === ontem) return;
   const ordem = [nivelAberto, ...NIVEIS.filter(n => n !== nivelAberto)];
   for (const nivel of ordem) {
     try {
@@ -491,9 +494,14 @@ async function lembrarOntem(ontem, nivelAberto, irPara) {
       const escreveu = folha.tracos.length > 0 || Object.keys(folha.letras).length > 0;
       if (!escreveu) continue;
       const faixa = $('lembrete-ontem');
-      faixa.textContent = `Ontem (${NOMES_NIVEIS[nivel]}) ficou sem conferir · toque para ver o gabarito`;
+      const abrir = $('lembrete-abrir');
+      abrir.textContent = `Ontem (${NOMES_NIVEIS[nivel]}) ficou sem conferir · toque para ver o gabarito`;
+      abrir.onclick = () => irPara(ontem, nivel);
+      $('lembrete-fechar').onclick = () => {
+        gravarPreferencia('lembrete-dispensado', ontem);
+        faixa.hidden = true;
+      };
       faixa.hidden = false;
-      faixa.onclick = () => irPara(ontem, nivel);
       return;
     } catch (erro) {
       console.error(erro);
