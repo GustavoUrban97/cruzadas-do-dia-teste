@@ -4,7 +4,7 @@
     "nome": "Vingadores: Doutor Destino",
     "cor": "#e2dcea",
     "titulo": { "facil": "Quinta de heróis", "media": "Quinta dos Vingadores", "dificil": "Quinta do Destino" },
-    "minimo": { "facil": 4, "media": 4, "dificil": 5 },
+    "minimo": { "facil": 4, "media": 4, "dificil": 4 },
     "maximo": { "facil": 8, "media": 9, "dificil": 10 },
     "palavras": [
       "ESCUDO", "MARTELO", "MANOPLA", "ARMADURA", "VILAO", "VILOES", "HEROI", "HEROIS", "HEROINA",

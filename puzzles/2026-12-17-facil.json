@@ -26,7 +26,7 @@
     "#H#TAREFA#ARA",
     "RAPEL#MESTRES"
   ],
-  "banco": ["AVIDO", "MILI", "RAPEL", "REMA", "RIMEL"],
+  "banco": ["AMAS", "AVIDO", "RAPEL", "REMA", "RIMEL"],
   "dicas": [
     {"linha": 0, "coluna": 0, "direcao": "direita-baixo", "texto": "Susto, pavor", "resposta": "MEDO"},
     {"linha": 0, "coluna": 0, "direcao": "baixo-direita", "texto": "Do rei; verdadeiro", "resposta": "REAL"},
