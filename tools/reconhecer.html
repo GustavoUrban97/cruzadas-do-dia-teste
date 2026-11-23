@@ -1,0 +1,113 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+  <title>Teste do reconhecimento</title>
+  <!-- Página de teste (fora do app): mede quanto o modelo acerta com a S Pen
+       antes de a conferência entrar no jogo. Usa os mesmos módulos do app. -->
+  <link rel="stylesheet" href="../css/estilo.css">
+  <style>
+    html, body { height: auto; overflow: auto; }
+    body { display: block; padding: 12px 24px 40px; }
+    h1 { font-size: 1.3rem; margin: 0 0 4px; }
+    .sub { margin: 0 0 12px; color: var(--tinta-suave); font-size: 0.85rem; font-style: italic; }
+    .abas { margin-bottom: 12px; }
+    .linha { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; margin: 8px 0; }
+    .linha label { font-size: 0.85rem; }
+    .resumo { font-size: 0.95rem; margin: 8px 0; }
+    .resumo b { font-size: 1.05rem; }
+    .erros { font-size: 0.85rem; color: var(--tinta-suave); }
+    select, input { font: inherit; font-size: 0.9rem; }
+
+    /* Quadro das letras soltas: casas do mesmo tamanho das da grade */
+    .quadro {
+      position: relative;
+      display: grid;
+      grid-template-columns: repeat(13, var(--casa-w));
+      grid-auto-rows: var(--casa-h);
+      gap: 1px;
+      padding: 1.5px;
+      width: max-content;
+      background: var(--linha);
+      touch-action: none;
+    }
+    .quadro .casa-teste { position: relative; background: var(--papel); }
+    .quadro .alvo {
+      position: absolute; top: 1px; left: 3px;
+      font-size: 11px; color: #a9a294; pointer-events: none;
+    }
+    .quadro canvas { position: absolute; inset: 0; width: 100%; height: 100%; pointer-events: none; }
+    .rotulo-resultado {
+      position: absolute; right: 2px; bottom: 1px;
+      font: 700 10px system-ui, sans-serif; pointer-events: none;
+    }
+    .miniatura { position: absolute; left: 2px; bottom: 2px; width: 28px; height: 28px; image-rendering: pixelated; opacity: 0.85; pointer-events: none; }
+    .sem-miniaturas .miniatura { display: none; }
+
+    /* Resultado por casa (nos dois modos) */
+    .conf-certa    { box-shadow: inset 0 0 0 3px #3f9b57; }
+    .conf-errada   { box-shadow: inset 0 0 0 3px #e0782a; }
+    .conf-ilegivel { box-shadow: inset 0 0 0 3px #8a867e; }
+    .conf-certa .rotulo-resultado    { color: #3f9b57; }
+    .conf-errada .rotulo-resultado   { color: #e0782a; }
+    .conf-ilegivel .rotulo-resultado { color: #6b665e; }
+
+    #cruzada .folha { padding: 0; display: block; }
+    #cruzada .papel { width: max-content; }
+    [hidden] { display: none !important; }
+  </style>
+  <script type="module" src="reconhecer-teste.js"></script>
+</head>
+<body>
+  <h1>Teste do reconhecimento de letras</h1>
+  <p class="sub" id="modelo-info">Carregando o modelo…</p>
+
+  <span class="niveis abas" role="group" aria-label="Modo">
+    <button type="button" class="nivel" data-aba="soltas" aria-pressed="true">Letras soltas</button>
+    <button type="button" class="nivel" data-aba="cruzada" aria-pressed="false">Conferir uma cruzada</button>
+  </span>
+
+  <!-- Modo 1: escrever as letras pedidas (cantinho de cada casa) e conferir -->
+  <section id="soltas">
+    <p class="sub">Escreva com a caneta, em cada casa, a letra pequena do canto (maiúscula, como na cruzada). Depois toque em Conferir.</p>
+    <div class="quadro" id="quadro"></div>
+    <div class="linha">
+      <button type="button" class="botao-texto" id="conferir">Conferir</button>
+      <button type="button" class="botao-texto" id="desfazer-teste">Desfazer</button>
+      <button type="button" class="botao-texto" id="limpar">Limpar</button>
+      <button type="button" class="botao-texto" id="nova-rodada">Nova rodada</button>
+    </div>
+    <div class="linha">
+      <label>Espessura <input type="range" id="espessura" min="0.05" max="0.18" step="0.01"></label>
+      <span id="espessura-valor"></span>
+      <label><input type="checkbox" id="miniaturas"> mostrar a imagem que o modelo vê</label>
+    </div>
+    <p class="resumo" id="resumo-rodada"></p>
+    <p class="resumo" id="resumo-total"></p>
+    <p class="erros" id="lista-erros"></p>
+    <div class="linha"><button type="button" class="botao-texto" id="zerar">Zerar o acumulado</button></div>
+  </section>
+
+  <!-- Modo 2: conferir uma cruzada de um dia passado, já escrita à caneta -->
+  <section id="cruzada" hidden>
+    <p class="sub">Só dias passados (as respostas aparecem). Usa a tinta salva neste aparelho.</p>
+    <div class="linha">
+      <label>Dia <input type="date" id="dia"></label>
+      <select id="nivel">
+        <option value="facil">Fácil</option>
+        <option value="media">Média</option>
+        <option value="dificil">Difícil</option>
+      </select>
+      <button type="button" class="botao-texto" id="abrir">Abrir e conferir</button>
+    </div>
+    <p class="resumo" id="resumo-cruzada"></p>
+    <p class="erros" id="erros-cruzada"></p>
+    <div class="folha" id="folha-cruzada">
+      <div class="papel" id="papel-cruzada">
+        <div class="grade" id="grade-cruzada"></div>
+      </div>
+    </div>
+  </section>
+</body>
+</html>

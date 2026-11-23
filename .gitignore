@@ -1,0 +1,7 @@
+dados/
+
+# Rascunho das dicas e ferramentas temporárias do gerador (não vão para o site)
+tools/_dicas/
+
+# Backup da tinta para medir o reconhecimento (tinta pessoal, não vai para o repositório)
+tools/_letra/

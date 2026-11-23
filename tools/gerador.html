@@ -1,0 +1,81 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Gerador de cruzadas</title>
+  <!-- Ferramenta de conteúdo (fora do app). Rode com um servidor local na raiz
+       do repositório e abra http://localhost:8000/tools/gerador.html -->
+  <style>
+    body { margin: 0; padding: 1rem 1.25rem 3rem; background: #f6f1e4; color: #1a1a1a; font: 15px/1.45 system-ui, sans-serif; }
+    h1 { margin: 0 0 0.25rem; font: 700 1.4rem Georgia, serif; }
+    h2 { margin: 1.5rem 0 0.5rem; font: 700 1.05rem Georgia, serif; }
+    p.nota { margin: 0 0 1rem; color: #5a5650; max-width: 60rem; }
+    fieldset { border: 1px solid #c9c0aa; border-radius: 8px; padding: 0.6rem 0.9rem; margin: 0 0 0.8rem; max-width: 60rem; }
+    legend { padding: 0 0.3rem; font-weight: 600; }
+    label { margin-right: 1rem; white-space: nowrap; }
+    input[type=number] { width: 4.5rem; }
+    input[type=url] { width: 100%; box-sizing: border-box; margin: 0.15rem 0 0.4rem; font-size: 0.85rem; }
+    button { font: inherit; padding: 0.35rem 0.9rem; border: 1.5px solid #1a1a1a; border-radius: 6px; background: #fff; cursor: pointer; margin: 0 0.4rem 0.4rem 0; }
+    button:disabled { opacity: 0.4; cursor: default; }
+    #log { max-height: 10rem; overflow: auto; background: #1a1a1a; color: #dfe9d8; font: 12px/1.4 ui-monospace, Consolas, monospace; padding: 0.5rem 0.7rem; border-radius: 6px; white-space: pre-wrap; max-width: 60rem; }
+    textarea { width: 100%; max-width: 60rem; min-height: 9rem; box-sizing: border-box; font: 12px ui-monospace, Consolas, monospace; }
+    .puzzles { display: grid; grid-template-columns: repeat(auto-fill, minmax(17rem, 1fr)); gap: 0.8rem; }
+    .puzzle { background: #fff; border: 1px solid #d8d0bd; border-radius: 8px; padding: 0.6rem 0.7rem; }
+    .puzzle h3 { margin: 0 0 0.3rem; font-size: 0.95rem; }
+    .puzzle pre { margin: 0 0 0.4rem; font: 13px/1.1 ui-monospace, Consolas, monospace; letter-spacing: 0.15em; }
+    .puzzle .palavras { font-size: 0.75rem; color: #5a5650; word-spacing: 0.15em; }
+    .puzzle .faltam { color: #b3261e; }
+  </style>
+  <script type="module" src="gerador/app.js"></script>
+</head>
+<body>
+  <h1>Gerador de cruzadas</h1>
+  <p class="nota">
+    Gera cruzadas diretas 13×17, cada uma com o seu esqueleto, com as dicas em branco.
+    Depois cole os textos das dicas (JSON) e salve na pasta <code>puzzles/</code>.
+    Rode <code>python3 tools/validar.py</code> antes do commit: arquivos com dica em branco não passam.
+  </p>
+
+  <fieldset>
+    <legend>O que gerar</legend>
+    <label>Primeiro dia <input type="date" id="inicio"></label>
+    <label>Dias <input type="number" id="dias" min="1" max="31" value="10"></label>
+    <label><input type="checkbox" data-nivel="facil" checked> Fácil</label>
+    <label><input type="checkbox" data-nivel="media" checked> Média</label>
+    <label><input type="checkbox" data-nivel="dificil" checked> Difícil</label>
+    <label>Trabalhos em paralelo <input type="number" id="paralelos" min="1" max="32" value="4"></label>
+  </fieldset>
+
+  <fieldset>
+    <legend>Listas de palavras (baixadas na hora, não ficam no repositório)</legend>
+    Frequência <input type="url" id="url-frequencia">
+    Dicionário (só as palavras em minúscula contam) <input type="url" id="url-dicionario">
+    Palavras proibidas: <code>tools/proibidas.txt</code>
+  </fieldset>
+
+  <button type="button" id="gerar">Gerar</button>
+  <button type="button" id="parar" disabled>Parar</button>
+  <button type="button" id="refazer" title="Depois de acrescentar palavras em tools/proibidas.txt">Refazer as que têm palavras proibidas</button>
+  <button type="button" id="limpar">Limpar lote</button>
+
+  <h2>Andamento</h2>
+  <div id="log"></div>
+
+  <h2>Dicas</h2>
+  <p class="nota">
+    JSON com os textos, por nível e/ou por arquivo (o do arquivo vale mais):
+    <code>{"facil": {"CASA": "Lar"}, "2026-11-20-dificil": {"CASA": "Onde mora o coração"}}</code>
+  </p>
+  <textarea id="dicas" spellcheck="false"></textarea><br>
+  <button type="button" id="aplicar">Aplicar dicas</button>
+  <button type="button" id="copiar-palavras">Copiar lista de palavras (para escrever as dicas)</button>
+
+  <h2>Salvar</h2>
+  <button type="button" id="salvar-pasta" disabled>Salvar na pasta puzzles…</button>
+  <button type="button" id="baixar" disabled>Baixar um por um</button>
+
+  <h2>Cruzadas geradas</h2>
+  <div class="puzzles" id="puzzles"></div>
+</body>
+</html>

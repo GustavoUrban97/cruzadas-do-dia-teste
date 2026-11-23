@@ -1,0 +1,19 @@
+{
+  "_sobre": "Dias com tema, lidos pelo gerador. Chave: AAAA-MM-DD (um dia) ou MM-DD (todo ano). nome e cor (#rrggbb, clara, sem vermelho nem verde) vão para o puzzle; titulo (texto ou por nível) troca o do dia da semana; palavras: candidatas sem acento, até 9 letras (parte delas entra na grade); minimo/maximo: quantas palavras-tema por nível.",
+  "2026-12-17": {
+    "nome": "Vingadores: Doutor Destino",
+    "cor": "#e2dcea",
+    "titulo": { "facil": "Quinta de heróis", "media": "Quinta dos Vingadores", "dificil": "Quinta do Destino" },
+    "minimo": { "facil": 4, "media": 4, "dificil": 5 },
+    "maximo": { "facil": 8, "media": 9, "dificil": 10 },
+    "palavras": [
+      "ESCUDO", "MARTELO", "MANOPLA", "ARMADURA", "VILAO", "VILOES", "HEROI", "HEROIS", "HEROINA",
+      "PODER", "PODERES", "VINGADOR", "DESTINO", "DOUTOR", "MASCARA", "CAPA", "RAIO", "TROVAO",
+      "TEIA", "ARANHA", "MAGIA", "FEITICO", "MAGO", "MUTANTE", "GARRAS", "TITA", "VIUVA", "GAVIAO",
+      "FLECHA", "ARCO", "PANTERA", "FORMIGA", "VESPA", "FALCAO", "SOLDADO", "CAPITAO", "GALAXIA",
+      "PORTAL", "INFINITO", "JOIA", "JOIAS", "GUERRA", "BATALHA", "ALIANCA", "LENDA", "GIBI",
+      "QUADRINHO", "ESTREIA", "CINEMA", "PIPOCA", "INGRESSO", "SAGA", "ELENCO", "TRAJE", "CETRO",
+      "ELMO", "CHIFRES", "ANDROIDE", "EQUIPE", "THOR", "LOKI", "ODIN", "ASGARD", "WAKANDA", "VIBRANIO"
+    ]
+  }
+}

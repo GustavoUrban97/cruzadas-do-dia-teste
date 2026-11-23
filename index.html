@@ -1,0 +1,166 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover">
+  <meta name="theme-color" content="#f6f1e4">
+  <title>Cruzadas do Dia (teste)</title>
+  <!-- As versões dos arquivos são controladas pelo service worker (sw.js). -->
+  <link rel="stylesheet" href="css/estilo.css">
+  <script type="module" src="js/app.js"></script>
+</head>
+<body>
+  <header class="cabecalho">
+    <!-- Barra de cima: o dia (data, nível, navegação, histórico) -->
+    <div class="barra barra-dia">
+      <p class="data" id="data-extenso"></p>
+      <span class="niveis" role="group" aria-label="Nível">
+        <button type="button" class="nivel" data-nivel="facil" aria-pressed="false">Fácil</button>
+        <button type="button" class="nivel" data-nivel="media" aria-pressed="false">Média</button>
+        <button type="button" class="nivel" data-nivel="dificil" aria-pressed="false">Difícil</button>
+      </span>
+      <span class="info">
+        <span class="edicao" id="edicao"></span>
+        <span class="versao" id="versao"></span>
+      </span>
+      <button type="button" class="botao-texto" id="ir-ontem" hidden>Ontem</button>
+      <button type="button" class="botao-texto" id="ir-hoje" hidden>Hoje</button>
+      <button type="button" class="botao-icone" id="abrir-historico" title="Meu histórico" aria-label="Meu histórico">
+        <svg viewBox="0 0 24 24"><path d="M5 20V12 M10 20V6 M15 20v-9 M20 20V9 M3 20.5h18" fill="none" stroke="#1a1a1a" stroke-width="2" stroke-linecap="round"/></svg>
+      </button>
+    </div>
+
+    <!-- Barra de baixo: a escrita (ferramentas) e o "Terminei" -->
+    <div class="barra barra-escrita">
+      <nav class="ferramentas" aria-label="Ferramentas">
+        <button type="button" data-ferramenta="caneta" id="botao-caneta" title="Caneta" aria-label="Caneta">
+          <svg viewBox="0 0 24 24"><path d="M4 20l1.2-4.6L15.5 5.1a2 2 0 0 1 2.8 0l.6.6a2 2 0 0 1 0 2.8L8.6 18.8z" fill="currentColor"/><path d="M14 6.6l3.4 3.4" stroke="#f6f1e4" stroke-width="1.2"/></svg>
+        </button>
+        <span class="cores" role="group" aria-label="Cor da caneta">
+          <button type="button" class="cor" data-cor="preta" title="Caneta preta" aria-label="Caneta preta"></button>
+          <button type="button" class="cor" data-cor="azul" title="Caneta azul" aria-label="Caneta azul"></button>
+          <button type="button" class="cor" data-cor="vermelha" title="Caneta vermelha" aria-label="Caneta vermelha"></button>
+        </span>
+        <button type="button" data-ferramenta="lapis" title="Lápis" aria-label="Lápis">
+          <svg viewBox="0 0 24 24"><path d="M4 20l1-4L15.5 5.5l3 3L8 19z" fill="none" stroke="#8a867e" stroke-width="1.8" stroke-linejoin="round"/><path d="M13.5 7.5l3 3" stroke="#8a867e" stroke-width="1.8"/></svg>
+        </button>
+        <button type="button" data-ferramenta="borracha" title="Borracha" aria-label="Borracha">
+          <svg viewBox="0 0 24 24"><path d="M9 19l-4-4a1.5 1.5 0 0 1 0-2.1l8-8a1.5 1.5 0 0 1 2.1 0l4 4a1.5 1.5 0 0 1 0 2.1L12 19z M8.5 9.5l6 6 M9 19h11" fill="none" stroke="#1a1a1a" stroke-width="1.7" stroke-linejoin="round" stroke-linecap="round"/></svg>
+        </button>
+        <button type="button" data-ferramenta="teclado" title="Teclado" aria-label="Teclado">
+          <svg viewBox="0 0 24 24"><rect x="2.5" y="6" width="19" height="12" rx="2" fill="none" stroke="#1a1a1a" stroke-width="1.7"/><path d="M6 9.5h1 M9.5 9.5h1 M13 9.5h1 M16.5 9.5h1 M6 12.5h1 M9.5 12.5h1 M13 12.5h1 M16.5 12.5h1 M8 15h8" stroke="#1a1a1a" stroke-width="1.7" stroke-linecap="round"/></svg>
+        </button>
+        <span class="separador" aria-hidden="true"></span>
+        <button type="button" id="desfazer" title="Desfazer" aria-label="Desfazer" disabled>
+          <svg viewBox="0 0 24 24"><path d="M9 14L4 9l5-5 M4 9h10.5a5.5 5.5 0 0 1 0 11H11" fill="none" stroke="#1a1a1a" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </button>
+        <button type="button" id="refazer" title="Refazer" aria-label="Refazer" disabled>
+          <svg viewBox="0 0 24 24"><path d="M15 14l5-5-5-5 M20 9H9.5a5.5 5.5 0 0 0 0 11H13" fill="none" stroke="#1a1a1a" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </button>
+      </nav>
+      <button type="button" class="botao-texto" id="conferir" hidden aria-pressed="false">Conferir</button>
+    </div>
+  </header>
+
+  <p class="aviso" id="aviso" hidden></p>
+  <button type="button" class="faixa" id="atualizacao" hidden>Atualização disponível · toque para recarregar</button>
+  <button type="button" class="faixa" id="novo-puzzle" hidden>Novo puzzle disponível · toque para abrir</button>
+  <button type="button" class="faixa faixa-clara" id="lembrete-ontem" hidden>Ontem ficou sem conferir · toque para ver o gabarito</button>
+
+  <!-- Hoje: resultado da conferência (sem mostrar respostas) -->
+  <div class="resultado" id="resultado" hidden>
+    <span class="resultado-texto" id="resultado-texto"></span>
+    <span class="resultado-botoes">
+      <button type="button" class="botao-texto" id="aceitar-ilegiveis" hidden>As ilegíveis estão certas</button>
+      <button type="button" class="botao-texto" id="desistir">Desistir</button>
+      <button type="button" class="botao-icone" id="fechar-resultado" title="Fechar" aria-label="Fechar">
+        <svg viewBox="0 0 24 24"><path d="M6 6l12 12 M18 6L6 18" fill="none" stroke="#1a1a1a" stroke-width="2" stroke-linecap="round"/></svg>
+      </button>
+    </span>
+  </div>
+
+  <!-- Dias passados: como o dia terminou e o gabarito -->
+  <div class="avaliacao" id="avaliacao" hidden>
+    <span class="avaliacao-texto" id="avaliacao-texto"></span>
+    <span class="resumo-letras" id="resumo-letras" hidden></span>
+    <button type="button" class="botao-texto alternar-gabarito" id="alternar-gabarito">Ocultar gabarito</button>
+  </div>
+  <div class="toast" id="toast" role="status" hidden></div>
+
+  <!-- Painel "Meu histórico": estatísticas, calendário e backup -->
+  <dialog class="painel" id="historico" aria-labelledby="historico-titulo">
+    <div class="painel-quadro">
+      <div class="painel-topo">
+        <h2 id="historico-titulo">Meu histórico</h2>
+        <button type="button" class="botao-icone" id="fechar-historico" title="Fechar" aria-label="Fechar">
+          <svg viewBox="0 0 24 24"><path d="M6 6l12 12 M18 6L6 18" fill="none" stroke="#1a1a1a" stroke-width="2" stroke-linecap="round"/></svg>
+        </button>
+      </div>
+      <span class="niveis abas-nivel" role="group" aria-label="Nível do histórico">
+        <button type="button" class="nivel" data-aba-nivel="facil" aria-pressed="false">Fácil</button>
+        <button type="button" class="nivel" data-aba-nivel="media" aria-pressed="false">Média</button>
+        <button type="button" class="nivel" data-aba-nivel="dificil" aria-pressed="false">Difícil</button>
+      </span>
+      <p class="historico-erro" id="historico-erro"></p>
+
+      <div class="numeros">
+        <div><strong id="est-jogados">0</strong><span>jogados</span></div>
+        <div><strong id="est-porcentagem">0</strong><span>% acertei tudo</span></div>
+        <div><strong id="est-atual">0</strong><span>sequência atual</span></div>
+        <div><strong id="est-melhor">0</strong><span>melhor sequência</span></div>
+      </div>
+
+      <h3>Distribuição</h3>
+      <div class="distribuicao" id="distribuicao"></div>
+
+      <div class="mes">
+        <button type="button" class="botao-icone" id="mes-anterior" aria-label="Mês anterior">
+          <svg viewBox="0 0 24 24"><path d="M15 5l-7 7 7 7" fill="none" stroke="#1a1a1a" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </button>
+        <h3 id="mes-nome"></h3>
+        <button type="button" class="botao-icone" id="mes-seguinte" aria-label="Mês seguinte">
+          <svg viewBox="0 0 24 24"><path d="M9 5l7 7-7 7" fill="none" stroke="#1a1a1a" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </button>
+      </div>
+      <div class="calendario" id="calendario"></div>
+      <div class="legenda">
+        <span><i class="estado-acertei-tudo"></i>Acertei tudo</span>
+        <span><i class="estado-errei-algumas"></i>Errei algumas</span>
+        <span><i class="estado-nao-terminei"></i>Não terminei</span>
+        <span><i class="estado-jogou"></i>Em andamento</span>
+        <span id="legenda-tema" hidden>★ Dia com tema</span>
+      </div>
+
+      <div class="backup">
+        <span>Backup (tinta e registro):</span>
+        <button type="button" class="botao-texto" id="exportar">Exportar</button>
+        <button type="button" class="botao-texto" id="importar">Importar</button>
+        <input type="file" id="arquivo-backup" accept=".json,application/json" hidden>
+      </div>
+    </div>
+  </dialog>
+
+  <main class="folha" id="folha">
+    <!-- O "papel" envolve a grade e recebe a camada de tinta (canvas) por cima. -->
+    <div class="papel" id="papel">
+      <div class="grade" id="grade" aria-label="Grade"></div>
+    </div>
+    <!-- Banco: palavras raras da grade, de ponta-cabeça (como no jornal).
+         Fica fora do .papel para não mudar a área da tinta. -->
+    <div class="banco" id="banco" hidden></div>
+    <!-- Modo teclado: dica da palavra selecionada + teclado próprio (estilo Termo). -->
+    <div class="area-teclado" id="area-teclado" hidden>
+      <div class="faixa-dica">
+        <button type="button" class="dica-navegar" id="dica-anterior" title="Palavra anterior" aria-label="Palavra anterior">
+          <svg viewBox="0 0 24 24"><path d="M15 5l-7 7 7 7" fill="none" stroke="#1a1a1a" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </button>
+        <p class="dica-atual" id="dica-atual"></p>
+        <button type="button" class="dica-navegar" id="dica-seguinte" title="Próxima palavra" aria-label="Próxima palavra">
+          <svg viewBox="0 0 24 24"><path d="M9 5l7 7-7 7" fill="none" stroke="#1a1a1a" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </button>
+      </div>
+      <div class="teclado" id="teclado" role="group" aria-label="Teclado"></div>
+    </div>
+  </main>
+</body>
+</html>

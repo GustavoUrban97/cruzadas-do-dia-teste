@@ -1,0 +1,107 @@
+{
+ "versao": 1,
+ "dados": "EMNIST ByMerge (NIST), s\u00f3 letras",
+ "formato": "float16-le",
+ "entrada": [
+  1,
+  28,
+  28
+ ],
+ "classes": "ABCDEFGHIJKLMNOPQRSTUVWXYZabdefghnqrt",
+ "precisao_teste": 0.951,
+ "precisao_teste_top3": 0.996,
+ "camadas": [
+  {
+   "tipo": "conv",
+   "entrada": 1,
+   "saida": 32,
+   "k": 3,
+   "pesos": {
+    "inicio": 0,
+    "tamanho": 288
+   },
+   "vies": {
+    "inicio": 288,
+    "tamanho": 32
+   }
+  },
+  {
+   "tipo": "relu"
+  },
+  {
+   "tipo": "pool"
+  },
+  {
+   "tipo": "conv",
+   "entrada": 32,
+   "saida": 64,
+   "k": 3,
+   "pesos": {
+    "inicio": 320,
+    "tamanho": 18432
+   },
+   "vies": {
+    "inicio": 18752,
+    "tamanho": 64
+   }
+  },
+  {
+   "tipo": "relu"
+  },
+  {
+   "tipo": "pool"
+  },
+  {
+   "tipo": "conv",
+   "entrada": 64,
+   "saida": 64,
+   "k": 3,
+   "pesos": {
+    "inicio": 18816,
+    "tamanho": 36864
+   },
+   "vies": {
+    "inicio": 55680,
+    "tamanho": 64
+   }
+  },
+  {
+   "tipo": "relu"
+  },
+  {
+   "tipo": "pool"
+  },
+  {
+   "tipo": "achatar"
+  },
+  {
+   "tipo": "densa",
+   "entrada": 576,
+   "saida": 128,
+   "pesos": {
+    "inicio": 55744,
+    "tamanho": 73728
+   },
+   "vies": {
+    "inicio": 129472,
+    "tamanho": 128
+   }
+  },
+  {
+   "tipo": "relu"
+  },
+  {
+   "tipo": "densa",
+   "entrada": 128,
+   "saida": 37,
+   "pesos": {
+    "inicio": 129600,
+    "tamanho": 4736
+   },
+   "vies": {
+    "inicio": 134336,
+    "tamanho": 37
+   }
+  }
+ ]
+}
